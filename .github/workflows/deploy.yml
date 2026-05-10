@@ -1,0 +1,47 @@
+name: Deploy to Vercel
+
+# Deploys the Next.js app to Vercel production on every push to main.
+#
+# Alternative: if you connect the GitHub repo to Vercel via the dashboard
+# (Settings → Git Integration), Vercel handles deployment automatically and
+# this workflow is not needed. Use this file when you need explicit control
+# (e.g., run type-check before deploying, or deploy only after CI passes).
+#
+# Required repository secrets (Settings → Secrets and variables → Actions):
+#   VERCEL_TOKEN      — personal access token from vercel.com/account/tokens
+#   VERCEL_ORG_ID     — copy from .vercel/project.json after `vercel link`
+#   VERCEL_PROJECT_ID — copy from .vercel/project.json after `vercel link`
+#
+# All runtime env vars (OPENAI_API_KEY, SUPABASE_*, etc.) should be added
+# directly in the Vercel dashboard under Project → Settings → Environment Variables.
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Type-check and deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check
+        run: npm run type-check
+
+      - name: Deploy to Vercel
+        run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID:     ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}

@@ -1,0 +1,55 @@
+name: Ingest Wiki Content
+
+# Runs automatically when markdown files under content/ are pushed to main.
+# Also supports manual triggers from the GitHub Actions UI (Actions → Ingest Wiki Content → Run workflow).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "content/**"
+
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Ingestion mode"
+        required: false
+        default: incremental
+        type: choice
+        options:
+          - incremental   # re-index only pages changed in HEAD~1..HEAD
+          - full          # re-index everything and delete orphaned pages
+
+jobs:
+  ingest:
+    name: Ingest changed pages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # fetch-depth: 2 gives us HEAD and HEAD~1 so git diff works.
+          # The ingest script falls back to a full re-index if git diff fails.
+          fetch-depth: 2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ingestion pipeline
+        run: |
+          if [ "${{ github.event.inputs.mode }}" = "full" ]; then
+            npm run ingest:all
+          else
+            npm run ingest
+          fi
+        env:
+          NEXT_PUBLIC_SUPABASE_URL:  ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          OPENAI_API_KEY:            ${{ secrets.OPENAI_API_KEY }}
