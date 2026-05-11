@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "wiki-ai/Test.md",
+                "file": "aws-certified-devops-slides-v19.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Test"
+              "title": "aws-certified-devops-slides-v19"
             }
           }
         ]
@@ -194,13 +194,13 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "721dc2bd777cffba",
+  "active": "59ae09500d88794b",
   "lastOpenFiles": [
+    "wiki-ai/Test.md",
     "aws-certified-devops-slides-v19.md",
     "pdfs/AWS Certified DevOps Slides v19.pdf",
     "pdfs",
     "wiki-ai/Welcome.md",
-    "wiki-ai/Test.md",
     "getting-started/overview.md",
     "topics/ai-fundamentals.md"
   ]
