@@ -39,3 +39,6 @@ next-env.d.ts
 # Obsidian vault local files (if vault root is inside repo)
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
+
+# PDF source files — convert to markdown with `npm run ingest:pdf`, commit the .md output
+content/pdfs/*.pdf
