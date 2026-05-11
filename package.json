@@ -9,7 +9,8 @@
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "ingest": "tsx -r dotenv/config scripts/ingest.ts dotenv_config_path=.env.local",
-    "ingest:all": "tsx -r dotenv/config scripts/ingest.ts dotenv_config_path=.env.local --all"
+    "ingest:all": "tsx -r dotenv/config scripts/ingest.ts dotenv_config_path=.env.local --all",
+    "ingest:pdf": "tsx -r dotenv/config scripts/ingest-pdf.ts dotenv_config_path=.env.local"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.1",
